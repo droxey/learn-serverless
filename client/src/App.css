@@ -24,7 +24,11 @@ input[type="file"] {
 }
 
 .App {
-  text-align: center;
+  margin-top: 15px;
+}
+
+.App .navbar-brand {
+  font-weight: bold;
 }
 
 .App-logo {
