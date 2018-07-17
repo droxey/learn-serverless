@@ -6,12 +6,12 @@ Add your user's IAM credentials to `env.yml`:
 
     ```yaml
     dev:
-    AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
-    AWS_SECRET_ACCESS_KEY: iam_user_secret_access_key
+       AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
+      AWS_SECRET_ACCESS_KEY: iam_user_secret_access_key
 
     prod:
-    AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
-    AWS_SECRET_ACCESS_KEY: iam_user_secret_access_key
+      AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
+      AWS_SECRET_ACCESS_KEY: iam_user_secret_access_key
     ```
 
 As well as `~/.aws/credentials`:
