@@ -4,15 +4,14 @@ import { success, failure } from "./libs/response-lib";
 export async function main(event, context, callback) {
   console.log("[EVENT]", event);
   const params = {
-    TableName: "note",
+    TableName: "note_test",
     // 'KeyConditionExpression' defines the condition for the query
     // - 'userId = :userId': only return items with matching 'userId' partition key
     // 'ExpressionAttributeValues' defines the value in the condition
     // - ':userId': defines 'userId' to be Identity Pool identity id of the authenticated user
-    KeyConditionExpression: "userId = :userId AND noteId = :noteId",
+    KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
-      ":userId": event.requestContext.identity.cognitoIdentityId,
-      ":noteId": "*"
+      ":userId": event.requestContext.identity.cognitoIdentityId
     }
   };
   try {
