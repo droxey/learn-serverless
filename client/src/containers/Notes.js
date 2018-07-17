@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { API, Storage } from "aws-amplify";
-import { s3Upload } from "../libs/awsLib";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
+import { s3Upload } from "../libs/awsLib";
 import config from "../config";
 import "./Notes.css";
 
@@ -45,6 +45,16 @@ export default class Notes extends Component {
     return API.get("notes", `/notes/${this.props.match.params.id}`);
   }
 
+  saveNote(note) {
+    return API.put("notes", `/notes/${this.props.match.params.id}`, {
+      body: note
+    });
+  }
+
+  deleteNote() {
+    return API.del("notes", `/notes/${this.props.match.params.id}`);
+  }
+
   validateForm() {
     return this.state.content.length > 0;
   }
@@ -63,46 +73,23 @@ export default class Notes extends Component {
     this.file = event.target.files[0];
   };
 
-  saveNote(note) {
-    return API.put("notes", `/notes/${this.props.match.params.id}`, {
-      body: note
-    });
-  }
-
-  deleteNote() {
-    return API.del("notes", `/notes/${this.props.match.params.id}`);
-  }
-
-  handleDelete = async event => {
-    event.preventDefault();
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this note?"
-    );
-    if (!confirmed) {
-      return;
-    }
-    this.setState({ isDeleting: true });
-    try {
-      await this.deleteNote();
-      this.props.history.push("/");
-    } catch (e) {
-      alert(e);
-      this.setState({ isDeleting: false });
-    }
-  };
-
   handleSubmit = async event => {
     let attachment;
+
     event.preventDefault();
+
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
       alert("Please pick a file smaller than 5MB");
       return;
     }
+
     this.setState({ isLoading: true });
+
     try {
       if (this.file) {
         attachment = await s3Upload(this.file);
       }
+
       await this.saveNote({
         content: this.state.content,
         attachment: attachment || this.state.note.attachment
@@ -116,14 +103,26 @@ export default class Notes extends Component {
 
   handleDelete = async event => {
     event.preventDefault();
+
     const confirmed = window.confirm(
       "Are you sure you want to delete this note?"
     );
+
     if (!confirmed) {
       return;
     }
+
     this.setState({ isDeleting: true });
+
+    try {
+      await this.deleteNote();
+      this.props.history.push("/");
+    } catch (e) {
+      alert(e);
+      this.setState({ isDeleting: false });
+    }
   };
+
   render() {
     return (
       <div className="Notes">

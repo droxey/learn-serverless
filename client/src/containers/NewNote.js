@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { API } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import config from "../config";
-import { API } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib";
+import config from "../config";
 import "./NewNote.css";
 
 export default class NewNote extends Component {
@@ -16,6 +16,12 @@ export default class NewNote extends Component {
       isLoading: null,
       content: ""
     };
+  }
+
+  createNote(note) {
+    return API.post("notes", "/notes", {
+      body: note
+    });
   }
 
   validateForm() {
@@ -34,13 +40,17 @@ export default class NewNote extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
       alert("Please pick a file smaller than 5MB");
       return;
     }
+
     this.setState({ isLoading: true });
+
     try {
       const attachment = this.file ? await s3Upload(this.file) : null;
+
       await this.createNote({
         attachment,
         content: this.state.content
