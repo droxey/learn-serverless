@@ -1,17 +1,17 @@
 # learn-serverless
 
-Add your user's IAM credentials to `env.yml`:
+Add your user's IAM credentials to the `dev` section of `env.yml`:
 
 - `env.yml`:
 
     ```yaml
     dev:
-       AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
+      APP_NAME: notes-app
+      AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
       AWS_SECRET_ACCESS_KEY: iam_user_secret_access_key
 
     prod:
-      AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
-      AWS_SECRET_ACCESS_KEY: iam_user_secret_access_key
+      APP_NAME: notes-app
     ```
 
 As well as `~/.aws/credentials`:
