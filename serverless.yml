@@ -29,7 +29,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-west-1:994086176805:table/note"
-  environment: ${file(.env.yml):${self:provider.stage}}
+  environment: ${file(env.yml):${self:provider.stage}}
 
 functions:
   create:
