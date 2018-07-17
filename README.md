@@ -1,18 +1,9 @@
 # dailycomm.it
 
-To test locally, execute the following commands in order:
-
-```bash
-$ serverless invoke local --function create --path mocks/create-event.json
-$ serverless invoke local --function get --path mocks/get-event.json
-$ serverless invoke local --function list --path mocks/list-event.json
-$ serverless invoke local --function update --path mocks/update-event.json
-$ serverless invoke local --function delete --path mocks/delete-event.json
-```
-
 Add your user's IAM credentials to `env.yml`:
 
 - `env.yml`:
+
     ```yaml
     dev:
     AWS_ACCESS_KEY_ID: iam_user_secret_access_key_id
@@ -26,6 +17,7 @@ Add your user's IAM credentials to `env.yml`:
 As well as `~/.aws/credentials`:
 
 - `~/.aws/credentials`:
+
     ```yaml
     [default]
     aws_access_key_id = root_aws_access_key_id
@@ -33,10 +25,20 @@ As well as `~/.aws/credentials`:
 
     [notesapp]
     aws_access_key_id = iam_user_secret_access_key_id
-    aws_secret_access_key = T5LPlUI/iam_user_secret_access_key
+    aws_secret_access_key = iam_user_secret_access_key
     ```
 
-To deploy, open a new Terminal window and run:
+To test locally, open a new Terminal window and execute the following commands in order:
+
+```bash
+$ serverless invoke local --function create --path mocks/create-event.json
+$ serverless invoke local --function get --path mocks/get-event.json
+$ serverless invoke local --function list --path mocks/list-event.json
+$ serverless invoke local --function update --path mocks/update-event.json
+$ serverless invoke local --function delete --path mocks/delete-event.json
+```
+
+To deploy, simply run:
 
 ```bash
 $ serverless deploy --aws-profile notesapp
