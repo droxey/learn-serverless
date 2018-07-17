@@ -1,3 +1,18 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "PT Serif", serif;
+}
+
 .App {
   text-align: center;
 }
@@ -23,6 +38,10 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
