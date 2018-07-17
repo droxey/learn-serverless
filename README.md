@@ -1,4 +1,4 @@
-# dailycomm.it
+# learn-serverless
 
 Add your user's IAM credentials to `env.yml`:
 
