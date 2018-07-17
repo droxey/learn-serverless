@@ -20,7 +20,7 @@ export const main = async event => {
   try {
     data = await dynamoDbLib.call("put", params);
   } catch (err) {
-    console.log("[ERROR]", e);
+    console.log("[ERROR]", err);
     return failure({ status: false });
   }
 
