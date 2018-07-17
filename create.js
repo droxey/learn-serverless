@@ -5,7 +5,7 @@ let data;
 
 export const main = async event => {
   const params = {
-    TableName: "notes",
+    TableName: "note",
     KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
       ":userId": event.requestContext.identity.cognitoIdentityId
