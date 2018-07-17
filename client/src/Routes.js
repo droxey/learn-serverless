@@ -6,7 +6,7 @@ import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import NotFound from "./containers/NotFound";
 import NewNote from "./containers/NewNote";
-import NewNote from "./containers/Notes";
+import Notes from "./containers/Notes";
 
 export default ({ childProps }) => (
   <Switch>
