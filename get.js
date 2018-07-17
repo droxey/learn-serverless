@@ -28,6 +28,7 @@ export async function main(event, context, callback) {
       );
     }
   } catch (e) {
+    console.log("[ERROR]", e);
     callback(null, failure({ status: false }));
   }
 }
