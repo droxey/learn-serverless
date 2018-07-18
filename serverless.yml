@@ -9,24 +9,32 @@ plugins:
 # serverless-webpack configuration
 # Enable auto-packing of external modules
 custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or fallsback to what we have set in the provider section.
   stage: ${opt:stage, self:provider.stage}
+  # Set our DynamoDB throughput for prod and all other non-prod stages.
   tableThroughputs:
     prod: 5
     default: 1
   tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+  # Load our webpack config
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-
-environment:
-  tableName:
-    Ref: NotesTable
+  # Load our secret environment variables based on the current stage.
+  # Fallback to default if it is not in prod.
+  environment: ${file(env.yml):${self:custom.stage}, file(env.yml):default}
 
 provider:
   name: aws
   runtime: nodejs8.10
   stage: dev
   region: us-west-1
+
+  environment:
+    tableName:
+      Ref: NotesTable
+
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -37,56 +45,78 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      #Resource: "arn:aws:dynamodb:us-west-1:994086176805:table/note_test"
+      # Restrict our IAM role permissions to
+      # the specific table for the stage
       Resource:
         - "Fn::GetAtt": [ NotesTable, Arn ]
-  environment: ${file(env.yml):${self:provider.stage}}
-  resources:
-    - ${file(resources/s3-bucket.yml)}
-    - ${file(resources/dynamodb-table.yml)}
-    - ${file(resources/cognito-user-pool.yml)}
-    - ${file(resources/cognito-identity-pool.yml)}
 
 functions:
+  # Defines an HTTP API endpoint that calls the main function in create.js
+  # - path: url path is /notes
+  # - method: POST request
+  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
+  #     domain api call
+  # - authorizer: authenticate using the AWS IAM role
   create:
     handler: create.main
     events:
       - http:
           path: notes
-          method: POST
-          private: false
+          method: post
           cors: true
           authorizer: aws_iam
+
   get:
+    # Defines an HTTP API endpoint that calls the main function in get.js
+    # - path: url path is /notes/{id}
+    # - method: GET request
     handler: get.main
     events:
       - http:
           path: notes/{id}
-          method: GET
+          method: get
           cors: true
           authorizer: aws_iam
+
   list:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /notes
+    # - method: GET request
     handler: list.main
     events:
       - http:
           path: notes
-          method: GET
+          method: get
           cors: true
           authorizer: aws_iam
+
   update:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /notes/{id}
+    # - method: PUT request
     handler: update.main
     events:
       - http:
           path: notes/{id}
-          method: PUT
+          method: put
           cors: true
           authorizer: aws_iam
 
   delete:
+    # Defines an HTTP API endpoint that calls the main function in delete.js
+    # - path: url path is /notes/{id}
+    # - method: DELETE request
     handler: delete.main
     events:
       - http:
           path: notes/{id}
-          method: DELETE
+          method: delete
           cors: true
           authorizer: aws_iam
+
+# Create our resources with separate CloudFormation templates
+resources:
+  - ${file(resources/dynamodb-table.yml)}
+  - ${file(resources/s3-bucket.yml)}
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
