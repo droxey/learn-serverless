@@ -1,5 +1,5 @@
 # NOTE: update this with your service name
-service: dailycommit
+service: dailycommit-api
 
 # Use the serverless-webpack plugin to transpile ES6
 plugins:
@@ -16,7 +16,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: prod
+  stage: dev
   region: us-west-1
   iamRoleStatements:
     - Effect: Allow
@@ -30,6 +30,9 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-west-1:994086176805:table/note_test"
   environment: ${file(env.yml):${self:provider.stage}}
+  resources:
+    - ${file(resources/s3-bucket.yml)}
+  # - ${file(resources/dynamodb-table.yml)}
 
 functions:
   create:

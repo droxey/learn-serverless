@@ -13,6 +13,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "AWS_PROFILE=notesapp aws s3 sync build/ s3://droxey-notes-app-client --delete",
+    "postdeploy": "AWS_PROFILE=notesapp aws cloudfront create-invalidation --distribution-id E26ICQWIKQNZMD --paths '/*' && AWS_PROFILE=notesapp aws cloudfront create-invalidation --distribution-id E2D37ELKABF8JD --paths '/*'"
   }
 }
