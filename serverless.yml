@@ -18,6 +18,10 @@ custom:
     webpackConfig: ./webpack.config.js
     includeModules: true
 
+environment:
+  tableName:
+    Ref: NotesTable
+
 provider:
   name: aws
   runtime: nodejs8.10
