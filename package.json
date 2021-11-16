@@ -13,7 +13,7 @@
     "url": "https://github.com/outputs-io/learn-serverless.git"
   },
   "devDependencies": {
-    "aws-sdk": "2.275.1",
+    "aws-sdk": "2.814.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-source-map-support": "^1.0.0",
